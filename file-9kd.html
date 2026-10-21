@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>實時時鐘 · 網上時鐘</title>
+    <!-- 引入外部 CSS 檔案 (style.css) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 時鐘主容器 -->
+    <div class="clock-container">
+        <!-- 日期顯示 (可選，但讓時鐘更完整) -->
+        <div class="date-display" id="dateDisplay">--</div>
+        <!-- 時間顯示 (數字) -->
+        <div class="time-display" id="timeDisplay">--:--:--</div>
+        <!-- 可選的秒針/裝飾 (不是必需，但增加視覺趣味) -->
+        <div class="clock-decoration">🕒</div>
+    </div>
+
+    <!-- JavaScript 時鐘程式 (直接嵌入 index.html) -->
+    <script>
+        (function() {
+            // 取得顯示元素
+            const timeElement = document.getElementById('timeDisplay');
+            const dateElement = document.getElementById('dateDisplay');
+
+            // 輔助函數：補零 (例如: 5 -> "05")
+            function padZero(num) {
+                return num.toString().padStart(2, '0');
+            }
+
+            // 更新時間的函數
+            function updateClock() {
+                const now = new Date();
+
+                // 取得時、分、秒 (24小時制)
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+
+                // 格式化時間: HH:MM:SS
+                const timeString = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+                timeElement.textContent = timeString;
+
+                // 可選：顯示日期 (例如 "2025年4月7日 星期一")
+                const year = now.getFullYear();
+                const month = now.getMonth() + 1; // 月份從0開始
+                const day = now.getDate();
+                const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+                const weekday = weekdays[now.getDay()];
+                const dateString = `${year}年${month}月${day}日 ${weekday}`;
+                dateElement.textContent = dateString;
+            }
+
+            // 立即執行一次，避免初始畫面空白
+            updateClock();
+
+            // 設定每1000毫秒(1秒)更新一次，實現實時時鐘
+            // 使用 setInterval 每秒更新，並確保精確度可接受
+            setInterval(updateClock, 1000);
+
+            // 可選：若瀏覽器標籤頁在背景時，setInterval 可能被節流，但對於時鐘顯示不影響功能
+            // 也可以使用 requestAnimationFrame 更精確，但使用 setInterval 已足夠
+        })();
+    </script>
+
+    <!-- 注意：此頁面無需額外載入外部 JavaScript 檔案，所有邏輯已內嵌於此 -->
+</body>
+</html>
